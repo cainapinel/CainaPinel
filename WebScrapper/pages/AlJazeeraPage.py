@@ -133,3 +133,4 @@ class AlJazeeraPage:
         except Exception as error:
             print(error)
             return False, None
+
