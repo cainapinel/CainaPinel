@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from WebScrapper.locators.AlJazeeraLocators import AlJazeeraLocators as LOCATORS
 from selenium.webdriver.common.keys import Keys
 from time import sleep
-from logging import info
+from robocorp.log import info
 
 
 class AlJazeeraPage:
@@ -110,7 +110,7 @@ class AlJazeeraPage:
                 contains_money = bool(money_pattern.search(title) or money_pattern.search(description))
 
                 img_data = requests.get(img_url).content
-                image_directory = f'{os.getcwd()}\\downloads'
+                image_directory = f'{os.getcwd()}\\output'
                 if not os.path.exists(image_directory):
                     os.makedirs(image_directory)
 

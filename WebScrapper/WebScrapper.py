@@ -3,18 +3,22 @@ from WebScrapper.pages.AlJazeeraPage import AlJazeeraPage
 from Xdriver.xDriver import Xdriver
 from datetime import datetime
 import calendar
+from robocorp.log import info
+
 
 class WebScrapper(Xdriver):
     def __init__(self,
                  download_path=None,
-                 chromedriver_path=None):
+                 chromedriver_path=None
+                 ,news_tags=None
+                 ,period_months=None):
         super().__init__(headless=False,
                          download_path=download_path,
                          chromedriver_path=chromedriver_path)
  
         self.aljazeera = AlJazeeraPage(webdriver=self)
-        self.news_tags = ['Olympics', 'Artificial Intelligence', 'Robotic Automation']
-        self.period_months = 2
+        self.news_tags = news_tags
+        self.period_months = period_months
         self.stop_at_period = ''
         self.get_periods()
     
@@ -56,5 +60,5 @@ class WebScrapper(Xdriver):
                     return "fail", data_extracted
                 return "ok", data_extracted
             except Exception as error:
-                print(str(error))
+                info(str(error))
                 return "fail", str(error)
