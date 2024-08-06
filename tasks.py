@@ -20,7 +20,7 @@ def handle_item():
 def webscrapping_aljazeera_page():
     '''This tasks webscrapes AlJazeera news'''
     item = workitems.inputs.current
-    news_tags_str = item.payload.get('news_topics')
+    news_tags_str = item.payload.get('news_tags')
     news_tags = ast.literal_eval(news_tags_str)
     period_months = item.payload.get('period_months')
     webscrapper = WebScrapper(news_tags=news_tags, period_months=period_months)
