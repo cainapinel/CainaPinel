@@ -1,60 +1,115 @@
-# Template: Python - Minimal
+# RPA News Extraction Challenge
 
-This template leverages the new [Python framework](https://github.com/robocorp/robocorp), the [libraries](https://github.com/robocorp/robocorp/blob/master/docs/README.md#python-libraries) from to same project as well.
+## Overview
 
-The template provides you with the basic structure of a Python project: logging out of the box and controlling your tasks without fiddling with the base Python stuff. The environment contains the most used libraries, so you do not have to start thinking about those right away. 
+Our mission is to enable all people to do the best work of their lives—the first act in achieving that mission is to help companies automate tedious but critical business processes. This RPA challenge showcases your ability to build a bot for process automation.
 
-👉 Other templates are available as well via our tooling and on our [Portal](https://robocorp.com/portal/tag/template)
+## 🟢 The Challenge
 
-## Running
+My challenge was to automate the process of extracting data from a news site. The goal was to demonstrate the ability to build an RPA bot that can perform a series of automated actions to retrieve, process, and store news data.
 
-#### VS Code
-1. Get [Robocorp Code](https://robocorp.com/docs/developer-tools/visual-studio-code/extension-features) -extension for VS Code.
-1. You'll get an easy-to-use side panel and powerful command-palette commands for running, debugging, code completion, docs, etc.
+## The Source
 
-#### Command line
+For this challenge, I used ONLY the Al Jazeera news website:
 
-1. [Get RCC](https://github.com/robocorp/rcc?tab=readme-ov-file#getting-started)
-1. Use the command: `rcc run`
+- https://www.aljazeera.com/
 
-## Results
+## Parameters
 
-🚀 After running the bot, check out the `log.html` under the `output` -folder.
+The process handles two main parameters via the Robocloud work item:
 
-## Dependencies
+1. **news_topic**: A list of search phrases (in Python list format).
+2. **period_months**: The number of months for which you need to receive news.
 
-We strongly recommend getting familiar with adding your dependencies in [conda.yaml](conda.yaml) to control your Python dependencies and the whole Python environment for your automation.
+## Inputs Used in Control Room
 
-<details>
-  <summary>🙋‍♂️ "Why not just pip install...?"</summary>
+- **news_topic**: `["climate change", "politics", "technology"]`
+- **period_months**: `3`
 
-Think of [conda.yaml](conda.yaml) as an equivalent of the requirements.txt, but much better. 👩‍💻 With `conda.yaml`, you are not just controlling your PyPI dependencies; you control the complete Python environment, which makes things repeatable and easy.
+These parameters were provided via a Robocloud work item, allowing dynamic control over the bot's search criteria and the time frame for retrieving news articles.
 
-👉 You will probably need to run your code on another machine quite soon, so by using `conda.yaml`:
-- You can avoid `Works on my machine` -cases
-- You do not need to manage Python installations on all the machines
-- You can control exactly which version of Python your automation will run on 
-  - You'll also control the pip version to avoid dep. resolution changes
-- No need for venv, pyenv, ... tooling and knowledge sharing inside your team.
-- Define dependencies in conda.yaml, let our tooling do the heavy lifting.
-- You get all the content of [conda-forge](https://prefix.dev/channels/conda-forge) without any extra tooling
+## The Process
 
-> Dive deeper with [these](https://github.com/robocorp/rcc/blob/master/docs/recipes.md#what-is-in-condayaml) resources.
+### Main Steps:
 
-</details>
-<br/>
+1. **Open the site** by navigating to https://www.aljazeera.com/.
+2. **Enter a phrase** in the search field and initiate the search.
+3. On the result page:
+    - **Select a news category or section** from the available options if applicable.
+    - **Choose the latest news** articles.
+4. **Extract the following values** for each article:
+    - Title
+    - Date
+    - Description
+    - Picture filename
+    - Count of search phrases in the title and description
+    - True or False, depending on whether the title or description contains any amount of money
 
-> The full power of [rpaframework](https://robocorp.com/docs/python/rpa-framework) -libraries is also available on Python as a backup while we implement the new Python libraries.
+    Possible formats for amounts of money:
+    - $11.1
+    - $111,111.11
+    - 11 dollars
+    - 11 USD
 
-## What now?
+5. **Store the extracted data** in an Excel file with columns:
+    - Title
+    - Date
+    - Description
+    - Picture filename
+    - Count of search phrases in the title and description
+    - True or False for the presence of monetary amounts
+6. **Download the news picture** and specify the file name in the Excel file.
+7. **Repeat steps 4-6** for all news articles that fall within the required time period.
 
-🚀 Now, go get'em
+## Implementation Details
 
-Start writing Python and remember that the AI/LLM's out there are getting really good and creating Python code specifically.
+### Setting Up Robocorp Control Room
 
-👉 Try out [Robocorp ReMark 💬](https://chat.robocorp.com)
+1. **Clone the Repository**:
+    ```bash
+    git clone [your-public-repo-link]
+    cd [your-repo-directory]
+    ```
 
-For more information, do not forget to check out the following:
-- [Robocorp Documentation -site](https://robocorp.com/docs)
-- [Portal for more examples](https://robocorp.com/portal)
-- Follow our main [robocorp -repository](https://github.com/robocorp/robocorp) as it is the main location where we developed the libraries and the framework.
+2. **Create a Robocorp Control Room Process**:
+    - Follow the [Robocorp Control Room setup guide](https://robocorp.com/docs/courses/beginners-course-python/12-running-in-robocorp-cloud).
+    - Create a new process in Robocorp Control Room.
+    - Upload your code to the process.
+
+3. **Configure Parameters in Robocorp**:
+    - Define the `news_topic` and `period_months` parameters within the Robocloud work item.
+    - Example configuration:
+        ```json
+        {
+            "news_topic": ["climate change", "politics", "technology"],
+            "period_months": 3
+        }
+        ```
+
+4. **Ensure Successful Run**:
+    - Run the process and ensure it completes successfully.
+    - Write the output files to the `/output` directory to make them visible in the artifacts list.
+
+5. **Invite Reviewers**:
+    - Once completed, invite [Challenges@thoughtfulautomation.com](mailto:Challenges@thoughtfulautomation.com) to your Robocorp Org.
+
+## Output
+
+The output is an Excel file stored in the `/output` directory containing the extracted news data with the following columns:
+
+- Title
+- Date
+- Description
+- Picture filename
+- Count of search phrases in the title and description
+- True or False for the presence of monetary amounts
+
+Additionally, the images downloaded from the news articles are stored in the same directory.
+
+## Conclusion
+
+This challenge demonstrates the ability to automate data extraction from the Al Jazeera news site using RPA tools and techniques. The solution handles parameterized inputs, processes the data, and stores the results efficiently.
+
+---
+
+Feel free to reach out for any clarifications or further assistance.
