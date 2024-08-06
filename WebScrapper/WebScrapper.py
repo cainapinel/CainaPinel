@@ -20,6 +20,7 @@ class WebScrapper(Xdriver):
         self.news_tags = news_tags
         self.period_months = period_months
         self.stop_at_period = ''
+        self.data_extracted = []
         self.get_periods()
     
     def get_periods(self):
@@ -58,11 +59,12 @@ class WebScrapper(Xdriver):
                 extract_from_articles, data_extracted = self.aljazeera.extract_from_articles(articles, search_phrases=news_topic)
                 if extract_from_articles is False:
                     return "fail", data_extracted
+                self.data_extracted.append(data_extracted)
             except Exception as error:
                 self.driver.quit()
                 info(str(error))
                 return "fail", str(error)
             else:
                 self.driver.quit()
-                return "ok", data_extracted
+                return "ok", self.data_extracted
             
