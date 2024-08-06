@@ -60,6 +60,8 @@ class WebScrapper(Xdriver):
                 if extract_from_articles is False:
                     return "fail", data_extracted
                 self.data_extracted.append(data_extracted)
+                print(f'{len(data_extracted)} articles extracted')
+                print(f'Finished to extract {news_topic}')
         except Exception as error:
             self.driver.quit()
             print(str(error))
