@@ -58,7 +58,11 @@ class WebScrapper(Xdriver):
                 extract_from_articles, data_extracted = self.aljazeera.extract_from_articles(articles, search_phrases=news_topic)
                 if extract_from_articles is False:
                     return "fail", data_extracted
-                return "ok", data_extracted
             except Exception as error:
+                self.driver.quit()
                 info(str(error))
                 return "fail", str(error)
+            else:
+                self.driver.quit()
+                return "ok", data_extracted
+            
