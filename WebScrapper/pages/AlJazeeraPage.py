@@ -3,7 +3,6 @@ from selenium.webdriver.common.by import By
 from WebScrapper.locators.AlJazeeraLocators import AlJazeeraLocators as LOCATORS
 from selenium.webdriver.common.keys import Keys
 from time import sleep
-from robocorp.log import info
 
 
 class AlJazeeraPage:
@@ -18,14 +17,14 @@ class AlJazeeraPage:
             elements = self.webdriver.driver.find_elements(By.TAG_NAME, 'div')
             for element in elements:
                 if element.get_attribute('class') == LOCATORS.CLASS_NAME_SEARCH_BUTTON:
-                    info('Search element found')
+                    print('Search element found')
                     element.click()
-                    info('Search element clicked')
+                    print('Search element clicked')
                     return element
-            info('Search element NOT found')
+            print('Search element NOT found')
             return False
         except Exception as error:
-            info(error)
+            print(error)
             return False
 
     def type_search_option(self, news_tag):
@@ -35,7 +34,7 @@ class AlJazeeraPage:
             search_bar_input.send_keys(Keys.ENTER)
             return True
         except Exception as error:
-            info(error)
+            print(error)
             return False
         
     def select_search_sort(self):
@@ -44,7 +43,7 @@ class AlJazeeraPage:
             self.webdriver.select_by_text(locator = LOCATORS.ID_SEARCH_SORT_TOPIC, visible_text = LOCATORS.SORT_BY_DATE)
             return True
         except Exception as error:
-            info(error)
+            print(error)
             return False
 
     def define_results_list(self):
@@ -52,41 +51,41 @@ class AlJazeeraPage:
             results_element = self.webdriver.wait(locator = LOCATORS.CLASS_RESULT_LIST)
             return results_element
         except Exception as error:
-            info(error)
+            print(error)
             return False
     
     def bring_all_periods(self, stop_period):
         self.webdriver.wait(LOCATORS.TAG_NAME_ARTICLE)
         counter = 1
         error_counter = 0
-        info('Searching for periods...')
+        print('Searching for periods...')
         articles = self.webdriver.driver.find_elements(By.TAG_NAME, 'article')
         while len(articles) <= 100:
             try:
                 articles = self.webdriver.driver.find_elements(By.TAG_NAME, 'article')
                 last_article = articles[-1]
-                info(f'{len(articles)} articles found')
-                info(f'Searching {counter} page results.')
+                print(f'{len(articles)} articles found')
+                print(f'Searching {counter} page results.')
                 last_article_footer = last_article.find_element(By.TAG_NAME, 'footer')
                 footer_text = last_article_footer.text
                 if len(articles) == 100:
-                    info('All articles are displayed')
+                    print('All articles are displayed')
                     return True, articles
                 elif not stop_period in footer_text:
-                    info('Period not complete at website.. Expanding results!')
-                    info('Scrolling to end of page')
+                    print('Period not complete at website.. Expanding results!')
+                    print('Scrolling to end of page')
                     self.webdriver.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                     button_show_more = self.webdriver.driver.find_element(By.CLASS_NAME, 'show-more-button')
                     button_show_more.click()
                     counter += 1
-                    info('Expanding results!')
+                    print('Expanding results!')
                     self.webdriver.driver.execute_script("window.scrollTo(0, 0);")
                     sleep(2) 
                 else:
-                    info('Final period reached. All articles are displayed')
+                    print('Final period reached. All articles are displayed')
                     return True, articles
             except Exception as error:
-                info(error)   
+                print(error)   
                 sleep(5)
                 error_counter += 1
                 if error_counter > 5:
@@ -130,6 +129,6 @@ class AlJazeeraPage:
                         })
             return True, data
         except Exception as error:
-            info(error)
+            print(error)
             return False, None
         

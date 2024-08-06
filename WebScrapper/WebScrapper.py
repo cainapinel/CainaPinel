@@ -3,7 +3,6 @@ from WebScrapper.pages.AlJazeeraPage import AlJazeeraPage
 from Xdriver.xDriver import Xdriver
 from datetime import datetime
 import calendar
-from robocorp.log import info
 
 
 class WebScrapper(Xdriver):
@@ -40,6 +39,7 @@ class WebScrapper(Xdriver):
     
     def webscrape_aljaeera(self):
         for news_topic in self.news_tags:
+            print(f'Running for topic: {news_topic}')
             try:
                 aljazerahomepage = self.aljazeera.acess_website()
                 if aljazerahomepage is False:
@@ -62,7 +62,7 @@ class WebScrapper(Xdriver):
                 self.data_extracted.append(data_extracted)
             except Exception as error:
                 self.driver.quit()
-                info(str(error))
+                print(str(error))
                 return "fail", str(error)
             else:
                 self.driver.quit()
