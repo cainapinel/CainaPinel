@@ -38,9 +38,9 @@ class WebScrapper(Xdriver):
         self.stop_at_period = periods_list[-1]
     
     def webscrape_aljaeera(self):
-        for news_topic in self.news_tags:
-            print(f'Running for topic: {news_topic}')
-            try:
+        try:
+            for news_topic in self.news_tags:
+                print(f'Running for topic: {news_topic}')
                 aljazerahomepage = self.aljazeera.acess_website()
                 if aljazerahomepage is False:
                     return "fail"
@@ -60,11 +60,11 @@ class WebScrapper(Xdriver):
                 if extract_from_articles is False:
                     return "fail", data_extracted
                 self.data_extracted.append(data_extracted)
-            except Exception as error:
-                self.driver.quit()
-                print(str(error))
-                return "fail", str(error)
-            else:
-                self.driver.quit()
-                return "ok", self.data_extracted
-            
+        except Exception as error:
+            self.driver.quit()
+            print(str(error))
+            return "fail", str(error)
+        else:
+            self.driver.quit()
+            return "ok", self.data_extracted
+        
